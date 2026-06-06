@@ -40,4 +40,8 @@ public class Aluno extends Pessoa {
         }
     }
 
+    public double alterarNota(double n){
+        nota = n;
+        return nota;
+    }
 }

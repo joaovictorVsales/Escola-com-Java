@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Main {
    public static void main(String[] args) throws Exception {
 
-       Scanner input = new Scanner(System.in);       
+       Scanner input = new Scanner(System.in);
        Aluno[] alunos = new Aluno[5];
        Professor[] professores = new Professor[5];
        int totalAlunos = 0;
@@ -44,7 +44,7 @@ public class Main {
                             break;
                        }
                        else if(idade < 4){
-                            System.out.println("O aluno é muito novo para se cadastrar");
+                            System.out.println("ERROR! O aluno é muito novo para se cadastrar");
                             break;
                        }
                        
@@ -54,6 +54,11 @@ public class Main {
                        System.out.print("Nota: ");
                        double nota = input.nextDouble();
                        input.nextLine();
+
+                       if (nota < 0 || nota > 10){
+                            System.out.println("ERROR! A nota do aluno deve estar entre 0 e 10");
+                            break;
+                       }
 
                        Aluno aluno = new Aluno(nome, idade, matricula, nota);
                        System.out.println("Analisando...");
@@ -92,7 +97,7 @@ public class Main {
                        System.out.print("Disciplina: ");
                        String disciplina = input.nextLine();
                        
-                       System.out.print("Salário: ");
+                       System.out.print("Salário: R$ ");
                        double salario = input.nextDouble();
                        input.nextLine();
 
@@ -132,14 +137,61 @@ public class Main {
                         if (totalAlunos == 5){
                             System.out.println("Alerta! O número máximo de alunos foi atingido!");
                         }
-                        System.out.println("---------------------");
-                        break;
                     }
                    
                     else {
                          System.out.println("ERRO!!! Nenhum aluno foi cadastrado ainda");
                        break;
                     }
+
+                    System.out.println("---------------------");
+                    System.out.println("1 - Alterar nota de aluno");
+                    System.out.println("2 - Voltar");
+                    System.out.print("O que deseja fazer? ");
+                    int segunda_opcao = Integer.parseInt(input.nextLine());
+
+                    switch (segunda_opcao) {
+                        case 1: {
+                            System.out.print("Digite o número do aluno que deseja alterar a nota: ");
+                            int aluno_nota = input.nextInt();
+                            input.nextLine();
+                            boolean achou = false;
+
+                            for(int i = 0; i < totalAlunos; i++){
+                                if ((i+1) == aluno_nota) {
+                                    achou = true;
+                                    System.out.println("---------------------");
+                                    System.out.println("Nome: " + alunos[i].getNome());
+                                    System.out.println("Nota: " + alunos[i].getNota());
+                                    System.out.println("---------------------");
+
+                                    System.out.print("Qual será a nova nota? ");
+                                    double nova_nota = input.nextDouble();
+                                    input.nextLine();
+
+                                    if (nova_nota < 0 || nova_nota > 10){
+                                        System.out.println("ERROR! A nota deve estar entre 0 a 10");
+                                    }
+
+                                    else{
+                                    alunos[i].alterarNota(nova_nota);
+                                    System.out.println("Nota do aluno alterada com sucesso!");
+                                    break;
+                                    }
+                                }
+                            }
+
+                            if (achou == false) {
+                                    System.out.println("ERROR! o Aluno não foi encontrado...");
+                                    break;
+                                }
+                            break;
+                        }
+
+                        case 2: {break;}
+
+                    }
+                    break;
                 }
 
                 case 4: {
@@ -152,22 +204,67 @@ public class Main {
                             System.out.println("Nome: " + professores[i].getNome());
                             System.out.println("Idade: " + professores[i].getIdade());
                             System.out.println("Disciplina: " + professores[i].getDisciplina());
-                            System.out.println("Salário: " + professores[i].getSalario());
-                            System.out.println("Salário anual: " + professores[i].calcularSalario());
+                            System.out.println("Salário: R$ " + professores[i].getSalario());
+                            System.out.println("Salário anual: R$ " + professores[i].calcularSalario());
                         }
                         System.out.println("---------------------");
                         System.out.println("Professores cadastrados: " + totalProfessores);
                         if (totalProfessores == 5){
                             System.out.println("Alerta! O número máximo de professores foi atingido!");
                         }
-                        System.out.println("---------------------");
-                        break;
                     }
                    
                     else {
-                         System.out.println("ERRO!!! Nenhum professor foi cadastrado ainda");
+                         System.out.println("ERROR!!! Nenhum professor foi cadastrado ainda");
                        break;
                     }
+
+                    System.out.println("---------------------");
+                    System.out.println("1 - Aumentar salário do professor");
+                    System.out.println("2 - Voltar");
+                    System.out.print("O que deseja fazer? ");
+                    int segunda_opcao = Integer.parseInt(input.nextLine());
+                    boolean achou = false;
+
+                    switch (segunda_opcao) {
+                        case 1: {
+                            System.out.print("Digite o número do professor que deseja aumentar o salário: ");
+                            int prof_salario = input.nextInt();
+                            input.nextLine();
+
+                            for(int i = 0; i < totalProfessores; i++){
+                                if ((i+1) == prof_salario) {
+                                    achou = true;
+                                    System.out.println("---------------------");
+                                    System.out.println("Nome: " + professores[i].getNome());
+                                    System.out.println("Salário: R$ " + professores[i].getSalario());
+                                    System.out.println("---------------------");
+
+                                    System.out.print("Quanto será o aumento? ");
+                                    double aumento = input.nextDouble();
+                                    input.nextLine();
+
+                                    if (aumento < 0){
+                                        System.out.println("ERROR! O aumento não pode ser negativo! ");
+                                    }
+
+                                    else{
+                                        professores[i].aumentarSalario(aumento);
+                                        System.out.println("Aumento de R$" + aumento + " realizado com sucesso!");
+                                        break;
+                                        }
+                                }
+                            }
+
+                            if (achou == false) {
+                                System.out.println("ERROR! O professor não foi encontrado...");
+                                break;
+                                }
+                            break;
+                        }
+                        case 2: {break;}
+                    }
+                    break;
                 }
 
                 case 5: {
@@ -176,10 +273,10 @@ public class Main {
                        System.out.println("BUSCA DE ALUNO");
                        System.out.print("Digite o nome do aluno: ");
                        String aluno_busca = input.nextLine();
-                       Boolean achou = false;
+                       boolean achou = false;
                        
                        for (int i = 0; i < totalAlunos; i++) {
-                           if(aluno[i].getNome().equals(aluno_busca)){
+                           if(alunos[i].getNome().equalsIgnoreCase(aluno_busca)){
                                System.out.println("---------------------");
                                System.out.println("Número: " + (i + 1));
                                System.out.println("Nome: " + alunos[i].getNome());
@@ -188,7 +285,34 @@ public class Main {
                                System.out.println("Nota: " + alunos[i].getNota());
                                System.out.println("Status: " + alunos[i].verificarAprovacao());
                                achou = true;
-                               break;
+                               
+                               System.out.println("---------------------");
+                               System.out.println("1 - Alterar nota de aluno");
+                               System.out.println("2 - Voltar");
+                               System.out.print("O que deseja fazer? ");
+                               int segunda_opcao = Integer.parseInt(input.nextLine());
+
+                               switch (segunda_opcao){
+                                  case 1: {
+                                        System.out.print("Qual será a nova nota? ");
+                                        double nova_nota = input.nextDouble();
+                                        input.nextLine();
+
+                                        if (nova_nota < 0 || nova_nota > 10){
+                                            System.out.println("ERROR! A nota deve estar entre 0 a 10");
+                                        }
+
+                                        else{
+                                            alunos[i].alterarNota(nova_nota);
+                                            System.out.println("Nota do aluno alterada com sucesso!");
+                                            achou = true;
+                                            break;
+                                        }
+                                        break;
+                                    }
+
+                                  case 2: {break;}
+                               }
                            }
                        }
                     if (achou == false) {
@@ -200,6 +324,7 @@ public class Main {
                        System.out.println("ERRO!!! Nenhum aluno foi cadastrado ainda");
                        break;
                    }
+                   break;
                 }
 
                 case 6:{
@@ -208,21 +333,47 @@ public class Main {
                        System.out.println("BUSCA DE PROFESSOR");
                        System.out.print("Digite o nome do professor: ");
                        String prof_busca = input.nextLine();
-                       Boolean achou = false;
+                       boolean achou = false;
                        
                        for (int i = 0; i < totalProfessores; i++) {
-                           if(professores[i].getNome().equals(prof_busca)){
+                           if(professores[i].getNome().equalsIgnoreCase(prof_busca)){
                                System.out.println("---------------------");
                                System.out.println("Número: " + (i + 1));
                                System.out.println("Nome: " + professores[i].getNome());
                                System.out.println("Idade: " + professores[i].getIdade());
                                System.out.println("Disciplina: " + professores[i].getDisciplina());
-                               System.out.println("Salário: " + professores[i].getSalario());
-                               System.out.println("Salário anual: " + professores[i].calcularSalario());
+                               System.out.println("Salário: R$ " + professores[i].getSalario());
+                               System.out.println("Salário anual: R$ " + professores[i].calcularSalario());
                                achou = true;
-                               break;
+
+                               System.out.println("---------------------");
+                               System.out.println("1 - Aumentar salário do professor");
+                               System.out.println("2 - Voltar");
+                               System.out.print("O que deseja fazer? ");
+                               int segunda_opcao = Integer.parseInt(input.nextLine());
+
+                               switch (segunda_opcao){
+                                   case 1: {
+                                       System.out.print("Quanto será o aumento? ");
+                                       double aumento = input.nextDouble();
+                                       input.nextLine();
+
+                                       if (aumento < 0){
+                                            System.out.println("ERROR! O aumento não pode ser negativo! ");
+                                        }
+
+                                       else{
+                                            professores[i].aumentarSalario(aumento);
+                                            System.out.println("Aumento de R$" + aumento + " realizado com sucesso!");
+                                            break;
+                                        }
+                                        break;
+                                    }
+                                    case 2: {break;}
+                                }
                            }
                        }
+
                     if (achou == false) {
                             System.out.println("ERRO!!! Nenhum professor com esse nome encontrado");
                             break;
@@ -231,21 +382,64 @@ public class Main {
                     else{
                        System.out.println("ERRO!!! Nenhum professor foi cadastrado ainda");
                        break;
-                   }
+                    }
+                break;
                 }
 
-               case 8:
+               case 7: {
+                    if (totalAlunos == 0 && totalProfessores == 0) {
+                        System.out.println("ERRO!!! Nenhum dado foi cadastrado ainda.");
+                        break;
+                    }
+
+                    else {
+                        if (totalAlunos > 0){
+                            System.out.println("---------------------");
+                            System.out.println("ALUNOS");
+                        for (int i = 0; i < totalAlunos; i++) {
+                            System.out.println("---------------------");
+                            System.out.println("Aluno: " + (i + 1));
+                            System.out.println("Nome: " + alunos[i].getNome());
+                            System.out.println("Idade: " + alunos[i].getIdade());
+                            System.out.println("Matrícula: " + alunos[i].getMatricula());
+                            System.out.println("Nota: " + alunos[i].getNota());
+                            System.out.println("Status: " + alunos[i].verificarAprovacao());
+                        }
+                        System.out.println("---------------------");
+                        System.out.println("Alunos cadastrados: " + totalAlunos);
+                    }
+
+                    if (totalProfessores > 0){
+                        System.out.println("---------------------");
+                        System.out.println("PROFESSORES");
+                        for (int i = 0; i < totalProfessores; i++) {
+                            System.out.println("---------------------");
+                            System.out.println("Professor: " + (i + 1));
+                            System.out.println("Nome: " + professores[i].getNome());
+                            System.out.println("Idade: " + professores[i].getIdade());
+                            System.out.println("Disciplina: " + professores[i].getDisciplina());
+                            System.out.println("Salário: R$ " + professores[i].getSalario());
+                            System.out.println("Salário anual: R$ " + professores[i].calcularSalario());
+                        }
+                        System.out.println("---------------------");
+                        System.out.println("Professores cadastrados: " + totalProfessores);
+                    }
+                    break;
+                }
+               }
+
+               case 8: {
                    System.out.println("Obrigado por utilizar o sistema!");
                    run = false;
                    break;
- 
-               default:
+               }
+               default: {
                    System.out.println("Opção inválida!!!");
                    break;
+               }
            }
                    
         }while(run);
    input.close();
    }
 }
-   

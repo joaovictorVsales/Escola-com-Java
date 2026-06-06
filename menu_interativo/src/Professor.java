@@ -31,8 +31,13 @@ public class Professor extends Pessoa {
         this.salario = salario;
     }
     
-        public double calcularSalario(){
-            salario *= 13;
-            return salario;
-        }
+    public double calcularSalario(){
+        return salario * 13;
     }
+
+    public double aumentarSalario(double aumento){
+        salario += aumento;
+        return salario;
+    }
+
+}
